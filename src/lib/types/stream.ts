@@ -35,7 +35,11 @@ import type {
 import type { TTSChunk, TTSOptions, TTSResult } from "./tts.js";
 import type { STTOptions, STTResult } from "./stt.js";
 import type { StandardRecord, ValidationSchema } from "./aliases.js";
-import type { CSVProcessorOptions, FileWithMetadata } from "./file.js";
+import type {
+  CSVProcessorOptions,
+  FileWithMetadata,
+  VideoProcessorOptions,
+} from "./file.js";
 import type { WorkflowConfig } from "./workflow.js";
 import type { LanguageModel, StepResult } from "./providers.js";
 import type { Tool, ToolChoice } from "./tools.js";
@@ -399,6 +403,17 @@ export type StreamOptions = {
   // CSV processing options (#379: canonical shape — see CSVProcessorOptions)
   csvOptions?: CSVProcessorOptions;
 
+  /**
+   * Video processing options (#478, #433).
+   *
+   * Reconstructed option objects have to carry this the same way they carry
+   * `csvOptions` and `pdfOptions`: the message builder hands it to the
+   * detector, which hands it to `VideoProcessor`, and anything that rebuilds
+   * the options along the way and omits it restores the defaults without
+   * saying so.
+   */
+  videoOptions?: VideoProcessorOptions;
+
   /** PDF processing options (#258). */
   pdfOptions?: {
     /** Password for an encrypted PDF (image-conversion fallback path). */
@@ -416,18 +431,6 @@ export type StreamOptions = {
      * not sent to the model at all. Defaults to PDF_LIMITS.DEFAULT_MAX_PAGES (20).
      */
     maxPages?: number;
-  };
-
-  // Video processing options
-  videoOptions?: {
-    /** Frames to extract. Unset lets VideoProcessor pick from the clip's duration; clamped to 100. */
-    frames?: number;
-    /** Frame encoder quality, clamped to 1-100. Default 80. */
-    quality?: number;
-    /** Frame encoding. Default jpeg. */
-    format?: "jpeg" | "png";
-    /** Not implemented yet (#433) — warns rather than silently doing nothing. */
-    transcribeAudio?: boolean;
   };
 
   /**

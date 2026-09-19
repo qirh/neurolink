@@ -130,6 +130,10 @@ export class MessageBuilder {
             },
             csvOptions: options.csvOptions,
             pdfOptions: options.pdfOptions,
+            // Same reason as csvOptions: the keyframe budget and the
+            // transcription flag are read downstream by the detector, and
+            // a reconstruction that omits them silently restores defaults.
+            videoOptions: options.videoOptions,
             provider: options.provider,
             model: options.model,
             temperature: options.temperature,
@@ -279,6 +283,10 @@ export class MessageBuilder {
             },
             csvOptions: options.csvOptions,
             pdfOptions: options.pdfOptions,
+            // Same reason as csvOptions: the keyframe budget and the
+            // transcription flag are read downstream by the detector, and
+            // a reconstruction that omits them silently restores defaults.
+            videoOptions: options.videoOptions,
             provider: options.provider,
             model: options.model,
             temperature: options.temperature,
